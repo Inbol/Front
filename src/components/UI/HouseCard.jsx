@@ -1,0 +1,1 @@
+// Aquí va la card de la casa para mostrarse
