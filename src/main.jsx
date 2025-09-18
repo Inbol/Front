@@ -15,6 +15,8 @@ import Houses from './pages/general/Houses'
 import Register from './pages/general/Register'
 import Login from './pages/general/Login'
 import Value from './pages/general/Value'
+import Disclaimer from "./pages/general/Disclaimer"
+import Results from './pages/general/Results';
 
 // Arreglo que contiene las rutas de la aplicación
 const router = createBrowserRouter([
@@ -25,7 +27,12 @@ const router = createBrowserRouter([
       { index: true, element: <Landing /> },
       { path: "services", element: <Services /> },
       { path: "houses", element: <Houses /> },
-      { path: "value", element: <Value/>}
+      { path: "disclaimer", element: <Disclaimer /> },
+      { path: "value/quick", element: <Value mode="quick" /> },
+      { path: "value/full", element: <Value mode="full" /> },
+      { path: "value", element: <Value/>},
+      { path: "results", element: <Results/>}
+  
     ]
   },
   {

@@ -35,7 +35,7 @@ function Navbar() {
                             <Link to="/services" className="text-white">Servicios</Link>
                         </li>
                         <li>
-                            <Link to="/value" className="text-white">Valuar</Link>
+                            <Link to="/disclaimer" className="text-white">Valuar</Link>
                         </li>
                     </ul>
                 </div>
