@@ -10,10 +10,10 @@ function Results() {
     if (saved) {
       const answersObj = JSON.parse(saved);
 
-      // 🔹 tomar solo las preguntas que tienen "field" (las importantes)
-      const importantQuestions = questions.slice(0, 15); // tus 15 preguntas
+      // tomar solo las preguntas que tienen "field" (las importantes)
+      const importantQuestions = questions.slice(0, 15);
 
-      // 🔹 armar objeto tipo fila de DataFrame
+      // armar objeto tipo fila de DataFrame
       const row = {};
       importantQuestions.forEach(q => {
         const val = answersObj[q.id];
@@ -22,19 +22,22 @@ function Results() {
           typeof val === 'string' && !isNaN(val) ? Number(val) : val;
       });
 
-      // 🔹 aquí lo envolvemos en un objeto "data"
+      // aquí lo envolvemos en un objeto "data"
       const payload = { data: row };
 
       setDataFrameRow(payload);
 
-      // opcional: enviar al backend
-      fetch('http://localhost:5000/predict', {
+      // enviar al backend
+      fetch('http://localhost:8000/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload), // 👈 envías el payload completo
+        body: JSON.stringify(payload), 
       })
         .then(r => r.json())
-        .then(res => setPrediction(res.prediction))
+        .then(res => {
+          console.log("Respuesta del back:", res);
+          setPrediction({ prediction: res.message }); // lo renombramos
+        })
         .catch(err => console.error(err));
     }
   }, []);
@@ -48,10 +51,12 @@ function Results() {
         {JSON.stringify(dataFrameRow, null, 2)}
       </pre>
 
-      {prediction !== null && (
+      {prediction && (
         <div className="bg-green-100 p-4 rounded-xl">
           <h3 className="text-lg font-bold text-green-800">Predicción:</h3>
-          <p className="text-green-700 text-xl">{prediction}</p>
+          <p className="text-green-700 text-xl">
+            ${prediction.prediction[0].toFixed(2)} DLS
+          </p>
         </div>
       )}
     </div>
