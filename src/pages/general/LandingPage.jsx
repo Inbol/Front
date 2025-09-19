@@ -51,7 +51,7 @@ function Home() {
                 </div>
               </div>
               <div className="mt-6">
-                <CustomButton texto="Comenzar valuación" style="primario" ruta="/value" />
+                <CustomButton texto="Comenzar valuación" style="primario" ruta="/disclaimer" />
               </div>
             </article>
 

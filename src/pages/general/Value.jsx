@@ -4,10 +4,9 @@ import QuestionCard from '../../components/UI/QuestionCard';
 import CustomButton from '../../components/UI/CustomButton';
 import { useNavigate } from 'react-router-dom';
 
-// Importa tus preguntas
 import questions from './questions';
 
-function Value({ mode = "quick" }) { // modo por prop: "quick" o "full"
+function Value({ mode = "quick" }) {
   const navigate = useNavigate();
   const [current, setCurrent] = useState(0);
   const [answers, setAnswers] = useState({});
@@ -24,19 +23,32 @@ function Value({ mode = "quick" }) { // modo por prop: "quick" o "full"
     }));
   };
 
-  const nextQuestion = () => {
-    if (current < activeQuestions.length - 1) {
-      setCurrent(current + 1);
-    } else {
-      // Guardamos respuestas en localStorage
-      localStorage.setItem('avaluoAnswers', JSON.stringify(answers));
-      console.log("✅ Respuestas finales:", answers);
-      setFinished(true);
+const nextQuestion = () => {
+  // ✅ Solo avanza si hay respuesta para la pregunta actual
+  if (answers[activeQuestions[current].id] === undefined || answers[activeQuestions[current].id] === null) {
+    alert("Por favor responde esta pregunta antes de continuar.");
+    return;
+  }
+
+  if (current < activeQuestions.length - 1) {
+    setCurrent(current + 1);
+  } else {
+    // 🔹 Siempre guardar solo las primeras 15 respuestas
+    const first15Ids = questions.slice(0, 15).map(q => q.id);
+    const filteredAnswers = Object.fromEntries(
+      Object.entries(answers).filter(([id]) =>
+        first15Ids.includes(Number(id))
+      )
+    );
+
+    localStorage.setItem('avaluoAnswers', JSON.stringify(filteredAnswers));
+    console.log("✅ Respuestas finales (solo primeras 15):", filteredAnswers);
+    setFinished(true);
     }
   };
 
   const handleResults = () => {
-    navigate("/results"); // Va a la página de resultados
+    navigate("/results");
   };
 
   return (
@@ -48,7 +60,6 @@ function Value({ mode = "quick" }) { // modo por prop: "quick" o "full"
 
         {!finished ? (
           <>
-            {/* Barra de progreso */}
             <div className="w-full bg-gray-200 rounded-full h-4 mb-6">
               <div
                 className="bg-secondary-500 h-4 rounded-full transition-all duration-300"
@@ -56,7 +67,6 @@ function Value({ mode = "quick" }) { // modo por prop: "quick" o "full"
               ></div>
             </div>
 
-            {/* Pregunta actual */}
             {activeQuestions[current] && (
               <motion.div
                 key={current}
@@ -73,7 +83,6 @@ function Value({ mode = "quick" }) { // modo por prop: "quick" o "full"
               </motion.div>
             )}
 
-            {/* Footer de control */}
             <div className="flex justify-between mt-8 items-center">
               <p className="text-gray-500">
                 Pregunta {current + 1} de {activeQuestions.length}
@@ -82,11 +91,11 @@ function Value({ mode = "quick" }) { // modo por prop: "quick" o "full"
                 texto={current === activeQuestions.length - 1 ? "Finalizar" : "Siguiente"}
                 style="terciario"
                 onClick={nextQuestion}
+                disabled={!answers[activeQuestions[current].id]}
               />
             </div>
           </>
         ) : (
-          // Pantalla final
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}

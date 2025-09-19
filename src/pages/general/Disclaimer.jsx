@@ -14,8 +14,8 @@ function Disclaimer() {
         </p>
 
         <ul className="list-disc list-inside text-gray-600 mb-6 space-y-2">
-          <li><strong>Avalúo rápido:</strong> 20 preguntas, precisión aproximada de ±30%.</li>
-          <li><strong>Avalúo detallado:</strong> 40 preguntas, precisión aproximada de ±10%.</li>
+          <li><strong>Avalúo rápido:</strong> 15 preguntas, precisión aproximada de ±5%.</li>
+          <li><strong>Avalúo detallado:</strong> 70 preguntas, precisión aproximada de ±1%.</li>
         </ul>
 
         <div className="flex justify-between gap-4">
