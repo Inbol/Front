@@ -1,7 +1,7 @@
 /**
- * @file Navbar.jsx
+ * @file NavbarLogin.jsx
  * @author Yael Pérez
- * @description Navbar que se renderiza en el public layout
+ * @description NavbarLogin que se renderiza en el public layout
  */
 
 import React from 'react';
@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import CustomButton from './CustomButton';
 
-function Navbar() {
+function NavbarLogin() {
 
     const navigate = useNavigate();
     const handleClick = () => {
@@ -32,20 +32,12 @@ function Navbar() {
                             <Link to="/houses" className="text-white">Casas</Link>
                         </li>
                         <li>
-                            <Link to="/value" className="text-white">Valuar</Link>
+                            <Link to="/services" className="text-white">Servicios</Link>
                         </li>
                         <li>
-                            <Link to="/heatmap" className="text-white">Mapa de Calor</Link>
-                        </li>
-                        <li>
-                            <Link to="/informes" className="text-white">Informes</Link>
                             <Link to="/disclaimer" className="text-white">Valuar</Link>
                         </li>
                     </ul>
-                </div>
-                <div className="flex gap-[1vw]">
-                    <CustomButton texto="Inicia Sesión" style='secundario' ruta="/simple/login" ></CustomButton>
-                    <CustomButton texto="Regístrate" style='secundario' ruta="/simple/register"></CustomButton> 
                 </div>
             </nav>
             </header>
@@ -53,4 +45,4 @@ function Navbar() {
     );
 }
 
-export default Navbar;
+export default NavbarLogin;
