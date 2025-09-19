@@ -10,13 +10,15 @@ import PublicLayout from './pages/layouts/PublicLayout'
 import SimpleLayout from './pages/layouts/SimpleLayout'
 // PAGES
 import Landing from './pages/general/LandingPage'
-import Services from './pages/general/Services'
 import Houses from './pages/general/Houses'
 import Register from './pages/general/Register'
 import Login from './pages/general/Login'
 import Value from './pages/general/Value'
 import Disclaimer from "./pages/general/Disclaimer"
 import Results from './pages/general/Results';
+import HeatMap from './pages/general/HeatMap'
+import Informes from  './pages/general/Informes'
+
 // CONTEXT
 import { UserProvider } from './contexts/ProveedorUsuario'
 
@@ -27,14 +29,15 @@ const router = createBrowserRouter([
     element: <PublicLayout/>,
     children: [
       { index: true, element: <Landing /> },
-      { path: "services", element: <Services /> },
       { path: "houses", element: <Houses /> },
       { path: "disclaimer", element: <Disclaimer /> },
       { path: "value/quick", element: <Value mode="quick" /> },
       { path: "value/full", element: <Value mode="full" /> },
       { path: "value", element: <Value/>},
-      { path: "results", element: <Results/>}
-  
+      { path: "results", element: <Results/>},
+      { path:  "heatmap", element: <HeatMap/> },
+      { path:  "informes", element: <Informes/> }
+      
     ]
   },
   {

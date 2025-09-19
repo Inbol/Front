@@ -7,13 +7,25 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import { useUser } from '../../hooks/useUser';
 import CustomButton from './CustomButton';
 
 function NavbarLogin() {
 
     const navigate = useNavigate();
+    const { setUser } = useUser();
+
     const handleClick = () => {
         navigate("/");
+    }
+
+    const handleLogout = () => {
+        // Limpiar context
+        setUser(null);
+        // Limpiar localStorage
+        localStorage.removeItem('user');
+        // Redirigir a login
+        navigate('/simple/login');
     }
 
     return (
@@ -38,6 +50,9 @@ function NavbarLogin() {
                             <Link to="/disclaimer" className="text-white">Valuar</Link>
                         </li>
                     </ul>
+                </div>
+                <div className="flex gap-[1vw]">
+                    <CustomButton texto="Cerrar sesión" style='secundario' onClick={handleLogout} ></CustomButton>
                 </div>
             </nav>
             </header>

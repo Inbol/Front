@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../../hooks/useUser';
 import CustomButton from '../../components/UI/CustomButton';
 import CustomInput from '../../components/UI/CustomInput';
 
@@ -8,6 +9,7 @@ function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const { setUser } = useUser();
 
   const handleLogin = async (e) => {
     e.preventDefault(); // evitar reload
@@ -24,10 +26,10 @@ function Login() {
       console.log("Respuesta del backend:", data);
 
       if (response.ok) {
-        // ejemplo: guardar usuario/token en localStorage si lo necesitas
-        localStorage.setItem('user', JSON.stringify(data.user));
-        // redirigir a landingpage
-        navigate('/houses');
+        const userData = { email: data.email, id: data.id, type: data.type };
+        localStorage.setItem('user', JSON.stringify(userData));
+        setUser(userData); // ahora sí actualiza el context
+        navigate('/');
       } else {
         setError(data.message || 'Credenciales inválidas');
       }

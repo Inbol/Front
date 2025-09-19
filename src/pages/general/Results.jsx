@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import questions from './questions';
+// 👇 importa la imagen
+import CasaImg from '../../assets/casa.jpg'; // ajusta la ruta según tu estructura
 
 function Results() {
   const [dataFrameRow, setDataFrameRow] = useState(null);
@@ -10,54 +12,60 @@ function Results() {
     if (saved) {
       const answersObj = JSON.parse(saved);
 
-      // tomar solo las preguntas que tienen "field" (las importantes)
       const importantQuestions = questions.slice(0, 15);
-
-      // armar objeto tipo fila de DataFrame
       const row = {};
       importantQuestions.forEach(q => {
         const val = answersObj[q.id];
-        // si es numérico convertir a Number
         row[q.field] =
           typeof val === 'string' && !isNaN(val) ? Number(val) : val;
       });
 
-      // aquí lo envolvemos en un objeto "data"
       const payload = { data: row };
-
       setDataFrameRow(payload);
 
-      // enviar al backend
       fetch('http://localhost:8000/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload), 
+        body: JSON.stringify(payload),
       })
         .then(r => r.json())
         .then(res => {
           console.log("Respuesta del back:", res);
-          setPrediction({ prediction: res.message }); // lo renombramos
+          setPrediction({ prediction: res.message });
         })
         .catch(err => console.error(err));
     }
   }, []);
 
   return (
-    <div className="p-8 max-w-2xl mx-auto bg-white shadow-lg rounded-2xl">
-      <h1 className="text-3xl font-bold mb-6 text-center">Resultados</h1>
+    <div className="p-8 max-w-xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6 text-center">Resultados del Avalúo</h1>
 
-      <h2 className="text-xl font-semibold mb-2">Fila tipo DataFrame:</h2>
-      <pre className="bg-gray-100 p-4 rounded-lg text-sm mb-6">
-        {JSON.stringify(dataFrameRow, null, 2)}
-      </pre>
+      {prediction ? (
+        <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
+          {/* Imagen local */}
+          <img
+            src={CasaImg} // 👈 usamos la importación aquí
+            alt="Casa evaluada"
+            className="w-full h-64 object-cover"
+          />
 
-      {prediction && (
-        <div className="bg-green-100 p-4 rounded-xl">
-          <h3 className="text-lg font-bold text-green-800">Predicción:</h3>
-          <p className="text-green-700 text-xl">
-            ${prediction.prediction[0].toFixed(2)} DLS
-          </p>
+          <div className="p-6 text-center">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">
+              Avalúo completado:
+            </h2>
+            <p className="text-3xl font-extrabold text-green-600 mb-2">
+              ${prediction.prediction[0].toFixed(2)} DLS
+            </p>
+            <p className="text-gray-500">
+              Recuerda que este avalúo considera un ±5% de error.
+            </p>
+          </div>
         </div>
+      ) : (
+        <p className="text-center text-gray-600">
+          Procesando tus respuestas...
+        </p>
       )}
     </div>
   );

@@ -7,9 +7,11 @@ const PublicLayout = () => {
   const { user } = useUser();
 
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       {user ? <NavbarLogin /> : <NavbarPublic />}
-      <Outlet></Outlet>
+      <main className="pt-19 h-full overflow-y-auto">
+        <Outlet></Outlet>
+      </main>
     </div>
   );
 };
