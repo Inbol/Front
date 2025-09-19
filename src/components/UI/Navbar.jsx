@@ -32,9 +32,6 @@ function Navbar() {
                             <Link to="/houses" className="text-white">Casas</Link>
                         </li>
                         <li>
-                            <Link to="/disclaimer" className="text-white">Valuar</Link>
-                        </li>
-                        <li>
                             <Link to="/heatmap" className="text-white">Mapa de Calor</Link>
                         </li>
                         <li>

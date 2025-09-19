@@ -47,7 +47,7 @@ function Home() {
                 </div>
                 {/* Imagen */}
                 <div className="w-full md:w-1/2 flex justify-center md:justify-end">
-                  <img src={aiImg} alt="Casa" className="max-w-xs w-xs rounded-xl shadow" />
+                  <img src={aiImg} alt="Casa" className="max-w-sm w-full rounded-xl shadow" />
                 </div>
               </div>
               <div className="mt-6">

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import questions from './questions';
-// 👇 importa la imagen
 import CasaImg from '../../assets/casa.jpg'; // ajusta la ruta según tu estructura
 
 function Results() {
@@ -45,7 +44,7 @@ function Results() {
         <div className="bg-white shadow-xl rounded-2xl overflow-hidden">
           {/* Imagen local */}
           <img
-            src={CasaImg} // 👈 usamos la importación aquí
+            src={CasaImg}
             alt="Casa evaluada"
             className="w-full h-64 object-cover"
           />

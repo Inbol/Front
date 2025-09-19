@@ -1,37 +1,46 @@
 /**
  * @file CustomInput.jsx
  * @author Yael Pérez
- * @description Componente que ayuda a manejar los inputs
+ * @description Floating label input 
  */
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const CustomInput = ({ type = "text", placeholder = "", value, onChange, name }) => {
-  const [isFocused, setIsFocused] = useState(false);
-  const shouldFloat = isFocused || value;
+const CustomInput = ({ type = "text", placeholder = "", value, onChange, name, required = false }) => {
+  const isControlled = typeof value !== "undefined";
+  const [internalValue, setInternalValue] = useState(isControlled ? value : "");
+
+  useEffect(() => {
+    if (isControlled) setInternalValue(value);
+  }, [value, isControlled]);
+
+  const handleChange = (e) => {
+    if (!isControlled) setInternalValue(e.target.value);
+    if (onChange) onChange(e);
+  };
 
   return (
     <div className="relative w-full">
       <input
-        required
         name={name}
         type={type}
-        value={value}
-        onChange={onChange} // ahora se actualiza desde el padre
-        onFocus={() => setIsFocused(true)}
-        onBlur={() => setIsFocused(false)}
+        value={internalValue}
+        onChange={handleChange}
+        placeholder=" " 
+        required={required}
         className={`
-          w-full border-2 border-gray-300 rounded-md px-4 pt-5 pb-2
+          peer w-full border-2 border-gray-300 rounded-md px-4 pt-5 pb-2
           focus:outline-none focus:border-blue-500
-          peer
         `}
       />
+
       {["text", "email", "password", "search", "tel", "url"].includes(type) && (
         <label
           className={`
-            absolute left-3 text-gray-500 transition-all
-            ${shouldFloat ? "top-1 text-xs text-blue-500" : "top-3.5 text-md"}
-            pointer-events-none
+            absolute left-3 pointer-events-none transition-all duration-150
+            top-1 text-xs
+            peer-placeholder-shown:top-3.5 peer-placeholder-shown:text-md peer-placeholder-shown:text-gray-500
+            peer-focus:top-1 peer-focus:text-xs peer-focus:text-blue-500
           `}
         >
           {placeholder}
