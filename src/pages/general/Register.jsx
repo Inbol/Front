@@ -1,20 +1,45 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import CustomButton from '../../components/UI/CustomButton';
 import CustomInput from '../../components/UI/CustomInput';
 
-function Register() {
-    // Estado para el tipo de usuario (default: usuario)
-    const [tipoUsuario, setTipoUsuario] = useState('usuario');
+    function Register() {
+        const navigate = useNavigate();
+        const [tipoUsuario, setTipoUsuario] = useState('usuario');
+        const [error, setError] = useState(null);
+        const [success, setSuccess] = useState(null);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const formData = new FormData(e.target);
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const data = Object.fromEntries(formData.entries());
 
-        // Debug: muestra lo que se envía
-        const data = Object.fromEntries(formData.entries());
-        console.log('Datos enviados:', data);
+    console.log("Datos enviados:", data);
 
-        // Aquí iría tu lógica para enviar a la API
+    // Elegir la ruta según el tipo de usuario
+    const endpoint =
+        data.tipoUsuario === "empresa" ? "http://localhost:8000/enterprises/" : "http://localhost:8000/users/";
+
+        try {
+            const response = await fetch(endpoint, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data),
+            });
+
+            const result = await response.json();
+            console.log("Respuesta del backend:", result);
+
+            if (response.ok) {
+                alert("Registro exitoso!");
+                navigate("/simple/login");
+            } else {
+                alert(result.message || "Error al registrarse");
+            }
+        } catch (error) {
+            console.error("Error en fetch:", error);
+            alert("Error en la conexión con el servidor");
+        }
     };
 
     return (
@@ -30,7 +55,6 @@ function Register() {
             </div>
 
             <div className='w-1/2 p-15 flex flex-col gap-3'>
-                {/* Botones para seleccionar tipo de usuario */}
                 <div className='bg-white p-2.5 rounded-xl w-[50%] flex gap-5 mx-auto justify-center'>
                     <CustomButton
                         texto={'Soy usuario'}
@@ -44,20 +68,17 @@ function Register() {
                     />
                 </div>
 
-                {/* FORMULARIO CONDICIONAL */}
                 {tipoUsuario === 'usuario' ? (
                     <form
                         className='bg-white p-10 rounded-xl flex flex-col justify-center items-center gap-[20px] w-[80%] mx-auto'
                         onSubmit={handleSubmit}
                     >
                         <h1 className='text-5xl font-bold'>Registro Usuario</h1>
-                        <CustomInput placeholder='Nombres(s)' type='text' name='nombres' required />
-                        <CustomInput placeholder='Apellido Paterno' type='text' name='apellidoPaterno' required />
-                        <CustomInput placeholder='Apellido Materno' type='text' name='apellidoMaterno' />
+                        <CustomInput placeholder='Nombres(s)' type='text' name='name' required />
+                        <CustomInput placeholder='Apellido Paterno' type='text' name='apellido_paterno' required />
+                        <CustomInput placeholder='Apellido Materno' type='text' name='apellido_materno' />
                         <CustomInput placeholder='Correo Electrónico' type='email' name='email' required />
                         <CustomInput placeholder='Contraseña' type='password' name='password' required />
-                        
-                        {/* Campo oculto con el tipo de usuario */}
                         <input type="hidden" name="tipoUsuario" value="usuario" />
 
                         <div className='flex w-full gap-2.5'>
@@ -68,6 +89,10 @@ function Register() {
                                 <span className='text-blue-400 cursor-pointer'> Política de privacidad</span>
                             </p>
                         </div>
+
+                        {error && <p className='text-red-500'>{error}</p>}
+                        {success && <p className='text-green-500'>{success}</p>}
+
                         <CustomButton texto={'Registrarme'} style='terciario' type='submit'></CustomButton>
                     </form>
                 ) : (
@@ -79,8 +104,6 @@ function Register() {
                         <CustomInput placeholder='Nombre de la empresa' type='text' name='nombreEmpresa' required />
                         <CustomInput placeholder='Correo Electrónico' type='email' name='email' required />
                         <CustomInput placeholder='Contraseña' type='password' name='password' required />
-                        
-                        {/* Campo oculto con el tipo de usuario */}
                         <input type="hidden" name="tipoUsuario" value="empresa" />
 
                         <div className='flex w-full gap-2.5'>
@@ -91,6 +114,10 @@ function Register() {
                                 <span className='text-blue-400 cursor-pointer'> Política de privacidad</span>
                             </p>
                         </div>
+
+                        {error && <p className='text-red-500'>{error}</p>}
+                        {success && <p className='text-green-500'>{success}</p>}
+
                         <CustomButton texto={'Registrarme'} style='terciario' type='submit'></CustomButton>
                     </form>
                 )}

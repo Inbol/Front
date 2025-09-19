@@ -5,23 +5,21 @@
  */
 
 import React, { useState } from "react";
-import PropTypes from "prop-types";
 
-const CustomInput = ({ type = "text", placeholder = "" }) => {
-  const [isFocused, setIsFocused] = useState(false); // Estado para indicar si se esta escribiendo en el input
-  const [value, setValue] = useState(""); // Estado para indicar si hay un valor en el input
-
+const CustomInput = ({ type = "text", placeholder = "", value, onChange, name }) => {
+  const [isFocused, setIsFocused] = useState(false);
   const shouldFloat = isFocused || value;
 
   return (
     <div className="relative w-full">
       <input
         required
+        name={name}
         type={type}
         value={value}
-        onFocus={() => setIsFocused(true)} 
+        onChange={onChange} // ahora se actualiza desde el padre
+        onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
-        onChange={(e) => setValue(e.target.value)}
         className={`
           w-full border-2 border-gray-300 rounded-md px-4 pt-5 pb-2
           focus:outline-none focus:border-blue-500
@@ -41,11 +39,6 @@ const CustomInput = ({ type = "text", placeholder = "" }) => {
       )}
     </div>
   );
-};
-
-CustomInput.propTypes = {
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
 };
 
 export default CustomInput;
