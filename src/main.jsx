@@ -17,6 +17,8 @@ import Login from './pages/general/Login'
 import Value from './pages/general/Value'
 import Disclaimer from "./pages/general/Disclaimer"
 import Results from './pages/general/Results';
+// CONTEXT
+import { UserProvider } from './contexts/ProveedorUsuario'
 
 // Arreglo que contiene las rutas de la aplicación
 const router = createBrowserRouter([
@@ -47,6 +49,8 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <RouterProvider router={router}></RouterProvider>
+    <UserProvider>
+      <RouterProvider router={router} />
+    </UserProvider>
   </StrictMode>,
 )
