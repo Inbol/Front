@@ -10,11 +10,13 @@ import PublicLayout from './pages/layouts/PublicLayout'
 import SimpleLayout from './pages/layouts/SimpleLayout'
 // PAGES
 import Landing from './pages/general/LandingPage'
-import Services from './pages/general/Services'
 import Houses from './pages/general/Houses'
 import Register from './pages/general/Register'
 import Login from './pages/general/Login'
 import Value from './pages/general/Value'
+import HeatMap from './pages/general/HeatMap'
+import Informes from  './pages/general/Informes'
+
 
 // Arreglo que contiene las rutas de la aplicación
 const router = createBrowserRouter([
@@ -23,9 +25,11 @@ const router = createBrowserRouter([
     element: <PublicLayout/>,
     children: [
       { index: true, element: <Landing /> },
-      { path: "services", element: <Services /> },
       { path: "houses", element: <Houses /> },
-      { path: "value", element: <Value/>}
+      { path: "value", element: <Value/>},
+      { path:  "heatmap", element: <HeatMap/> },
+      { path:  "informes", element: <Informes/> }
+      
     ]
   },
   {
